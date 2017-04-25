@@ -1,6 +1,7 @@
 #!/bin/bash  
 base_dir=/usr/local/mysql
 base_data_dir=/home/data
+base_conf_dir=`pwd`
 
 init_node_flag=`cat init.lst|head -1|awk '{print $4}'`
 
@@ -43,7 +44,7 @@ ${base_dir}/bin/mysqld --initialize-insecure --basedir=${base_dir} --datadir=${b
 
 chown -R mysql:mysql  ${base_data_dir}/${node_dir}
 
-cp ${base_data_dir}/s.cnf ${base_data_dir}/${node_name}/${node_name}.cnf
+cp ${base_conf_dir}/s.cnf ${base_data_dir}/${node_name}/${node_name}.cnf
 sed -i 's:${base_data_dir}:'"${base_data_dir}:g"'' ${base_data_dir}/${node_name}/${node_name}.cnf
 sed -i 's:${base_dir}:'"${base_dir}:g"'' ${base_data_dir}/${node_name}/${node_name}.cnf
 sed -i 's:${node_name}:'"${node_name}:g"''  ${base_data_dir}/${node_name}/${node_name}.cnf
