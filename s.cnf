@@ -1,0 +1,23 @@
+[mysqld]
+# server configuration
+datadir=${base_data_dir}/${node_name}
+basedir=${base_dir}
+
+port=${port}
+socket=${base_data_dir}/${node_name}/${node_name}.sock
+server_id=${port}
+gtid_mode=ON
+enforce_gtid_consistency=ON
+master_info_repository=TABLE
+relay_log_info_repository=TABLE
+binlog_checksum=NONE
+log_slave_updates=ON
+log_bin=binlog
+binlog_format=ROW
+
+transaction_write_set_extraction=XXHASH64
+loose-group_replication_group_name="1bb1b861-f776-11e6-be42-782bcb377193"
+loose-group_replication_start_on_boot=off
+loose-group_replication_local_address= "127.0.0.1:${v_port}"
+loose-group_replication_group_seeds= "${seed_list}"
+loose-group_replication_bootstrap_group= off
