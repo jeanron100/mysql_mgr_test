@@ -1,4 +1,3 @@
-
 #!/bin/bash  
 base_dir=/usr/local/mysql
 base_data_dir=/home/data
