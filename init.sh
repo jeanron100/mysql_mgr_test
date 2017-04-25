@@ -1,33 +1,5 @@
 
-base_dir=/usr/local/mysql
-base_data_dir=/home/data
-
-init_node_flag=`cat init.lst|head -1|awk '{print $4}'`
-
-function get_seed_list
-{
-while read line
-do
-tmp_port='127.0.0.1:'`echo $line|awk '{print $3}'`
-echo ${tmp_port}
-done <init.lst|xargs |sed 's/ /,/g'
-}
-
-export seed_list=`get_seed_list`
-#echo ${seed_list}
-
-function init_node
-{
-echo $seed_list
-port=$1
-node_name=$2
-v_port=$3
-primary_flag=$4
-init_node_flag=`cat init.lst|head -1|grep -w ${port}`
-if [[ -z ${init_node_flag} ]];
-then
-[root@grtest data]# 
-[root@grtest data]# cat init.sh
+#!/bin/bash  
 base_dir=/usr/local/mysql
 base_data_dir=/home/data
 
