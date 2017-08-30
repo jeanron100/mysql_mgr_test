@@ -1,6 +1,6 @@
+#!/bin/bash
 new_node_name=$1
-base_dir=/usr/local/mysql
-base_data_dir=/home/data
+. ./auto.cnf
 
 if [[ -z ${new_node_name} ]]; then
  echo Node Name is needed ~~~
