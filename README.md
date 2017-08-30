@@ -7,7 +7,7 @@ for example, /etc/hosts as below, 10.127.1.18 is current machine IP, and mysqlte
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 10.127.1.18  mysqltestdb
 
-2. change parameters from file init.sh following your environment needs.
+2. change parameters from file auto.cnf following your environment needs.
 for example, change below parameter values, you need to put mysql running path to /usr/local/mysql and create directory /home/data
 these can be changed following your needs.
 
