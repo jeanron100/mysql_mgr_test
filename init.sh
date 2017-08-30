@@ -1,6 +1,5 @@
 #!/bin/bash  
-base_dir=/usr/local/mysql
-base_data_dir=/home/data
+. ./auto.cnf
 base_conf_dir=`pwd`
 
 init_node_flag=`cat init.lst|head -1|awk '{print $4}'`
