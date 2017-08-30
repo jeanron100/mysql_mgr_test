@@ -1,4 +1,7 @@
 new_node_name=$1
+base_dir=/usr/local/mysql
+base_data_dir=/home/data
+
 if [[ -z ${new_node_name} ]]; then
  echo Node Name is needed ~~~
  exit
@@ -7,8 +10,8 @@ node_port=`cat init.lst|grep -w ${new_node_name}|awk '{print $1}'`
 node_name=`cat init.lst|grep -w ${new_node_name}|awk '{print $2}'`
 echo ${node_port}
 if [[ ${node_name} = ${new_node_name} ]];then
-mysql -P${node_port} -S /home/data/${node_name}/${node_name}.sock -e "select uuid(); select *from performance_schema.replication_group_members;"
-mysql -P${node_port} -S /home/data/${node_name}/${node_name}.sock -e " select *from performance_schema. replication_group_member_stats \G"
+${base_dir}/bin/mysql -P${node_port} -S ${base_data_dir}${node_name}/${node_name}.sock -e "select uuid(); select *from performance_schema.replication_group_members;"
+${base_dir}/bin/mysql -P${node_port} -S ${base_data_dir}/${node_name}/${node_name}.sock -e " select *from performance_schema. replication_group_member_stats \G"
 else
  echo Node Name not found in init.lst ~~~ 
 fi
