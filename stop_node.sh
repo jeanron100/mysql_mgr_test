@@ -1,3 +1,4 @@
+#!/bin/bash
 new_node_name=$1
 . ./auto.cnf
 
