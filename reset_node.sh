@@ -8,39 +8,62 @@ port=$1
 node_name=$2
 v_port=$3
 primary_flag=$4
-init_node_flag=`cat init.lst|sed -n '2p'|awk '{print $4}'`
-if [ ${init_node_flag} = 'N' ];
-then
- exit
-fi
 
-init_node_flag=`cat init.lst|head -1|grep -w ${port}`
-if [[ -z ${init_node_flag} ]];
+single_primary_mode=`cat init.lst|sed -n '2p'|awk '{print $4}'`
+if [ ${single_primary_mode} = 'Y' ];
 then
-init_node_flag='N'
+
+ ### Reset MGR In Single Primary Mode
+single_primary_mode=`cat init.lst|head -1|grep -w ${port}`
+ if [[ -z ${single_primary_mode} ]];
+then
+ single_primary_mode='N'
 else
-init_node_flag='Y'
-fi
-echo 'reset node '${node_name}
-if [ ${primary_flag} = 'Y' -a ${init_node_flag} = 'Y' ];
-then
-${base_dir}/bin/mysql -P${port}  -S ${base_data_dir}/${node_name}/${node_name}.sock -e "
-stop GROUP_REPLICATION;
-set global group_replication_single_primary_mode=off;
-set global group_replication_enforce_update_everywhere_checks=ON;
-SET GLOBAL group_replication_bootstrap_group=ON;
-START GROUP_REPLICATION;
-SET GLOBAL group_replication_bootstrap_group=OFF;
-"
-elif [ ${primary_flag} = 'Y' -a ${init_node_flag} = 'N'  ];then
-${base_dir}/bin/mysql -P${port}  -S ${base_data_dir}/${node_name}/${node_name}.sock -e   "
-stop GROUP_REPLICATION;
-set global group_replication_single_primary_mode=off;
-set global group_replication_enforce_update_everywhere_checks=ON;
-start group_replication;
-"
+ single_primary_mode='Y'
 fi
 
+echo 'reset node '${node_name}
+ if [ ${primary_flag} = 'Y' -a ${single_primary_mode} = 'Y' ];
+then
+ ${base_dir}/bin/mysql -P${port}  -S ${base_data_dir}/${node_name}/${node_name}.sock -e "
+ STOP GROUP_REPLICATION;
+ SET GLOBAL group_replication_single_primary_mode=off;
+ SET GLOBAL group_replication_enforce_update_everywhere_checks=ON;
+ SET GLOBAL group_replication_bootstrap_group=ON;
+ START GROUP_REPLICATION;
+ SET GLOBAL group_replication_bootstrap_group=OFF;
+"
+elif [ ${primary_flag} = 'Y' -a ${single_primary_mode} = 'N'  ];then
+ ${base_dir}/bin/mysql -P${port}  -S ${base_data_dir}/${node_name}/${node_name}.sock -e   "
+ STOP GROUP_REPLICATION;
+ SET GLOBAL group_replication_single_primary_mode=off;
+ SET GLOBAL group_replication_enforce_update_everywhere_checks=ON;
+ START GROUP_REPLICATION;
+"
+ fi
+elif [ ${single_primary_mode} = 'N' ];
+then
+echo 'reset node '${node_name}
+ if [ ${primary_flag} = 'Y' -a ${single_primary_mode} = 'N' ];
+then
+ ${base_dir}/bin/mysql -P${port}  -S ${base_data_dir}/${node_name}/${node_name}.sock -e "
+ STOP GROUP_REPLICATION;
+ SET GLOBAL group_replication_single_primary_mode=on; 
+ SET GLOBAL group_replication_enforce_update_everywhere_checks=OFF; 
+ SET GLOBAL group_replication_bootstrap_group=ON;
+ START GROUP_REPLICATION;
+ SET GLOBAL group_replication_bootstrap_group=OFF;
+"
+elif [ ${primary_flag} = 'N' -a ${single_primary_mode} = 'N'  ];then
+ ${base_dir}/bin/mysql -P${port}  -S ${base_data_dir}/${node_name}/${node_name}.sock -e   "
+ STOP GROUP_REPLICATION;
+ SET GLOBAL group_replication_single_primary_mode=on;
+ SET GLOBAL group_replication_enforce_update_everywhere_checks=OFF;
+ START GROUP_REPLICATION;
+"
+ fi
+
+fi
 }
 
 
