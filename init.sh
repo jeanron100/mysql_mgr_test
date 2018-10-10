@@ -39,7 +39,7 @@ else
 primary_flag='N'
 fi
 
-${base_dir}/bin/mysqld --initialize-insecure --basedir=${base_dir} --datadir=${base_data_dir}/${node_name} --explicit_defaults_for_timestamp
+${base_dir}/bin/mysqld --no-defaults --initialize-insecure --basedir=${base_dir} --datadir=${base_data_dir}/${node_name} --explicit_defaults_for_timestamp
 
 chown -R mysql:mysql  ${base_data_dir}/${node_dir}
 
