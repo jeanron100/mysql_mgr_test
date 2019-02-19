@@ -3,9 +3,9 @@ use script to create MySQL Group Replication environments fast and efficiently.
 
 1. download MySQL installation packages. www.mysql.com and ensure IP is configured is /etc/hosts.
 for example, /etc/hosts as below, 10.127.1.18 is current machine IP, and mysqltestdb is hostname,else MGR creation will have issues.
-127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-10.127.1.18  mysqltestdb
+  127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+  ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+  10.127.1.18  mysqltestdb
 
 2. change parameters from file auto.cnf following your environment needs.
 for example, change below parameter values, you need to put mysql running path to /usr/local/mysql and create directory /home/data
